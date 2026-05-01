@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'screens/dashboard_screen.dart';
+import 'app/bindings/app_bindings.dart';
+import 'app/routes/app_pages.dart';
+import 'services/api_ledger_service.dart';
+import 'services/ledger_service.dart';
+import 'services/mock_ledger_service.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -8,15 +13,27 @@ void main() {
 }
 
 class RtmsApp extends StatelessWidget {
-  const RtmsApp({super.key});
+  const RtmsApp({
+    super.key,
+    this.ledgerService = const bool.fromEnvironment(
+              'USE_MOCK_SERVICE',
+              defaultValue: false,
+            )
+        ? const MockLedgerService()
+        : const ApiLedgerService(),
+  });
+
+  final LedgerService ledgerService;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'RTMS',
       theme: AppTheme.governmentTheme,
       debugShowCheckedModeBanner: false,
-      home: const DashboardScreen(),
+      initialBinding: AppBindings(ledgerService),
+      initialRoute: AppPages.login,
+      getPages: AppPages.routes,
     );
   }
 }

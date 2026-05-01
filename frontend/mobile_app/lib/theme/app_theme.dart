@@ -12,7 +12,7 @@ class AppTheme {
         seedColor: govRed,
         primary: govRed,
         secondary: govBlack,
-        background: paper,
+        surface: paper,
       ),
       scaffoldBackgroundColor: paper,
       appBarTheme: const AppBarTheme(
